@@ -1,3 +1,142 @@
+## Table of Contents
+* [Naming](#naming)
+	* [Functions](#functions)
+	* [Variables](#variables)
+	* [Images](#images)
+	* [Protocols](#protocols)
+	* [Constants](#constants)
+* [Spacing](#spacing)
+* [Ternary Operator](#ternary)
+* [Error Handling](#error)
+* [Extensions](#extensions)
+* [Comments](#comments)
+* [CGRect Functions](#CGRect)
+
+##Naming 
+
+Names should be descriptive and camel cased. Type names should be capitalized, while function and variable names should start with a lower case letter.
+
+Abbreviations and acronyms should be avoided when possible.  The Swift [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/#follow-case-conventions) should be followed by uniformly uppercasing or lowercasing	any acronyms or initialisms.
+
+**Example:**
+```swift
+var utf8Bytes: [UTF8.CodeUnit]
+var isRepresentableAsASCII = true
+var userSMTPServer: SecureSMTPServer
+```
+
+**Not:**
+```swift
+var uTF8Bytes: [UTF8.CodeUnit]
+var isRepresentableAsAscii = true
+var userSmtpServer: SecureSmtpServer
+```
+
+###Functions
+ 
+The function name should not include any parameters. All parameters should be named.  The opening brace should be on a new line.
+
+**Example:**
+
+```swift
+	func loadImage(withName name: String) -> UIImage
+	{ 
+	}
+```
+
+###Variables
+
+Variables should be named descriptively, with the variable’s name clearly communicating what the variable is and pertinent information a programmer needs to use that value properly. Type inference should be relied on whenever possible.
+
+**Example:**
+
+- ```let title: String``` - It is reasonable to assume a “title” is a string.
+- ```let titleHTML: String``` - This indicates a title that may contain HTML which needs parsing for display. “HTML” is needed for a programmer to use this variable effectively.
+- ```let titleAttributedString: NSAttributedString``` - A title, already formatted for display. AttributedString hints that this value is not just a vanilla title, and adding it could be a reasonable choice depending on context.
+- ```let now: NSDate``` - No further clarification is needed.
+- ```let URL: NSURL``` vs. ```let URLString: String``` - In situations when a value can reasonably be represented by different classes, it is often useful to disambiguate in the variable’s name.
+- ```let releaseDateString: String``` - Another example where a value could be represented by another class, and the name can help disambiguate.
+- Single letter variable names should be avoided except as simple counter variables in loops.
+
+Bool values should not included “is”, “did”, or any other modifier.
+
+**Example:**
+
+```swift
+	var loaded: Bool
+```
+
+**Not:**
+
+```swift
+	var isLoaded: Bool
+	var didLoad: Bool
+```
+
+Static variables should be camel-case with the first letter capitalized.  All other variables should be camel-case with the first letter lowercase.
+
+**Example:**
+
+```swift
+	static var RequestTimeOut = 1000
+	
+	var requestCount: Int
+```
+
+###Images
+
+Image names should be named consistently to preserve organization. They should be named as one camel case string with a description of their purpose, followed by the un-prefixed name of the class or property they are customizing (if there is one), followed by a further description of color and/or placement, and finally their state.
+
+**Example:**
+
+RefreshBarButtonItem / RefreshBarButtonItem@2x RefreshBarButtonItemSelected / RefreshBarButtonItemSelected@2x
+RefreshBarButtonItemWhite / RefreshBarButtonItemWhite@2x
+RefreshBarButtonItemWhiteSelected / RefreshBarButtonItemWhiteSelected@2x
+
+Images that are used for a similar purpose should be grouped in respective groups in an Images folder or Asset Catalog.
+
+###Protocols
+
+In a delegate or data source protocol, the first parameter to each method should be the object sending the message.
+
+This helps disambiguate in cases when an object is the delegate for multiple similarly-typed objects, and it helps clarify intent to readers of a class implementing these delegate methods.
+
+**Example:**
+
+```swift
+	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) 
+	{
+		…
+	}
+```
+
+**Not:**
+
+```swift
+	func didSelectTableRowAtIndexPath(indexPath: NSIndexPath)
+	{
+		…
+	}
+```
+
+###Constants
+
+Constants are preferred over in-line string literals or numbers, as they allow for easy reproduction of commonly used variables and can be quickly changed without the need for find and replace. Constants can be declared by static variables, or by an enum with raw values.
+
+**Example:**
+
+```
+	static var HomeViewControllerIdentifier = “Home View Controller”
+
+	static var MaximumRefreshTime = 10000
+
+	enum Keys: String {
+		case Filename: “filename”
+		case Image = “image”
+		case Thumbnail = “thumbnail”
+	}
+```
+
 #Spacing
 
 Function braces always open on a new line and have a space before the return
@@ -61,60 +200,6 @@ Throwing errors and using do / catch syntax is preferred when a method returns a
 	func doSomethingAsynchronously(completion: Result)
 ```
 
-#Naming Functions
-
-Function should be named descriptively and be self documenting.  The first parameter name should be included in the function name.  The opening brace should be on a new line.
-
-**Example:**
-
-```
-	func loadImageWithName(name: String) -> UIImage
-	{ 
-	}
-```
-
-#Variables
-
-Variables should be named descriptively, with the variable’s name clearly communicating what the variable is and pertinent information a programmer needs to use that value properly.
-
-**Example:**
-
-- ```let title: String``` - It is reasonable to assume a “title” is a string.
-- ```let titleHTML: String``` - This indicates a title that may contain HTML which needs parsing for display. “HTML” is needed for a programmer to use this variable effectively.
-- ```let titleAttributedString: NSAttributedString``` - A title, already formatted for display. AttributedString hints that this value is not just a vanilla title, and adding it could be a reasonable choice depending on context.
-- ```let now: NSDate``` - No further clarification is needed.
-- ```let lastModifiedDate: NSDate``` - Simply lastModified can be ambiguous; depending on context, one could reasonably assume it is one of a few different types.
-- ```let URL: NSURL``` vs. ```let URLString: String``` - In situations when a value can reasonably be represented by different classes, it is often useful to disambiguate in the variable’s name.
-- ```let releaseDateString: String``` - Another example where a value could be represented by another class, and the name can help disambiguate.
-- Single letter variable names should be avoided except as simple counter variables in loops.
-
-Type inference should be relied on whenever possible.
-
-Bool values should not included “is”, “did”, or any other modifier.
-
-**Example:**
-
-```
-	var loaded: Bool
-```
-
-**Not:**
-
-```
-	var isLoaded: Bool
-	var didLoad: Bool
-```
-
-Static variables should be camel-case with the first letter capitalized.  All other variables should be camel-case with the first letter lowercase.
-
-**Example:**
-
-```
-	static var RequestTimeOut = 1000
-	
-	var requestCount: Int
-```
-
 #Extensions
 
 Extensions may be used to concisely segment functionality and should be named to describe that functionality.
@@ -153,7 +238,7 @@ Block comments should generally be avoided, as code should be as self-documentin
 
 #CGRect Functions
 
-Swift has extended CGRect to add getters for dimensional values, which means the CGRect functions are not longer required.  Computed properties can be accessed directly
+Swift has extended CGRect to add getters for dimensional values, which means the CGRect functions are no longer required.  Computed properties can be accessed directly
 
 Note: This is opposite of the convention used in Objective-C
 
@@ -167,60 +252,6 @@ Note: This is opposite of the convention used in Objective-C
 
 ```
 	let leftEdge = CGRectMinX(view.frame)
-```
-
-#Constants
-
-Constants are preferred over in-line string literals or numbers, as they allow for easy reproduction of commonly used variables and can be quickly changed without the need for find and replace. Constants can be declared by static variables, or by an enum with raw values.
-
-**Example:**
-
-```
-	static var HomeViewControllerIdentifier = “Home View Controller”
-
-	static var MaximumRefreshTime = 10000
-
-	enum Keys: String {
-		case Filename: “filename”
-		case Image = “image”
-		case Thumbnail = “thumbnail”
-	}
-```
-
-#Image Naming
-
-Image names should be named consistently to preserve organization. They should be named as one camel case string with a description of their purpose, followed by the un-prefixed name of the class or property they are customizing (if there is one), followed by a further description of color and/or placement, and finally their state.
-
-**Example:**
-
-RefreshBarButtonItem / RefreshBarButtonItem@2x RefreshBarButtonItemSelected / RefreshBarButtonItemSelected@2x
-RefreshBarButtonItemWhite / RefreshBarButtonItemWhite@2x
-RefreshBarButtonItemWhiteSelected / RefreshBarButtonItemWhiteSelected@2x
-
-Images that are used for a similar purpose should be grouped in respective groups in an Images folder or Asset Catalog.
-
-#Protocols
-
-In a delegate or data source protocol, the first parameter to each method should be the object sending the message.
-
-This helps disambiguate in cases when an object is the delegate for multiple similarly-typed objects, and it helps clarify intent to readers of a class implementing these delegate methods.
-
-**Example:**
-
-```
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) 
-	{
-		…
-	}
-```
-
-**Not:**
-
-```
-	func didSelectTableRowAtIndexPath(indexPath: NSIndexPath)
-	{
-		…
-	}
 ```
 
 #Xcode Project
